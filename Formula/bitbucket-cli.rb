@@ -1,28 +1,16 @@
 class BitbucketCli < Formula
   desc "CLI tool for Bitbucket Server to manage pull requests and integrate with Cursor"
   homepage "https://github.com/vkumbhar94/bitbucket-cli"
+  url "https://github.com/vkumbhar94/bitbucket-cli/archive/refs/tags/v1.0.4.tar.gz"
+  sha256 "8d5e7f5f5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e"
   version "1.0.4"
+  license "MIT"
 
-  if OS.mac?
-    if Hardware::CPU.arm?
-      url "https://github.com/vkumbhar94/bitbucket-cli/releases/download/v1.0.4/bitbucket-cli-v1.0.4-darwin-arm64"
-      sha256 "REPLACE_WITH_ACTUAL_SHA256_ARM64"
-    else
-      url "https://github.com/vkumbhar94/bitbucket-cli/releases/download/v1.0.4/bitbucket-cli-v1.0.4-darwin-amd64"
-      sha256 "REPLACE_WITH_ACTUAL_SHA256_AMD64"
-    end
-  elsif OS.linux?
-    if Hardware::CPU.arm?
-      url "https://github.com/vkumbhar94/bitbucket-cli/releases/download/v1.0.4/bitbucket-cli-v1.0.4-linux-arm64"
-      sha256 "REPLACE_WITH_ACTUAL_SHA256_LINUX_ARM64"
-    else
-      url "https://github.com/vkumbhar94/bitbucket-cli/releases/download/v1.0.4/bitbucket-cli-v1.0.4-linux-amd64"
-      sha256 "REPLACE_WITH_ACTUAL_SHA256_LINUX_AMD64"
-    end
-  end
+  depends_on "go" => :build
 
   def install
-    bin.install "bitbucket-cli-v1.0.4-#{OS.kernel_name.downcase}-#{Hardware::CPU.arch}" => "bitbucket-cli"
+    system "make", "build", "INSTALL_PREFIX=#{prefix}"
+    bin.install "bin/bitbucket-cli"
   end
 
   test do
